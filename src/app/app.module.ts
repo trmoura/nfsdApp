@@ -1,40 +1,57 @@
-import { NgModule, ErrorHandler } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
-
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import { RelatorioIssGeralProvider } from "../providers/relatorio-iss-geral/RelatorioIssGeralProvider";
+import { MyApp } from './app.component';
+import { TotalissPageModule } from '../pages/totaliss/totaliss.module';
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/pt';
+import { LoginPageModule } from '../pages/login/login.module';
+import { HomePageModule } from '../pages/home/home.module';
+import { LoginProvider } from '../providers/login/login.provider';
+
+
+
+
+registerLocaleData(localeFr, 'pt');
 
 @NgModule({
   declarations: [
-    MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
+    MyApp,    
+    TabsPage,
+    
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    HttpClientModule,    
+    TotalissPageModule,
+    LoginPageModule,
+    HomePageModule
+    
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    RelatorioIssGeralProvider,
+    LoginProvider
   ]
 })
-export class AppModule {}
+
+
+
+export class AppModule { }
