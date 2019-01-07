@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from '../../config/api.config';
 import { CredencialDTO } from '../../dto/crendencial.dto';
+import { GlobalProvider } from '../global/global';
 
 /*
   Generated class for the LoginProvider provider.
@@ -12,17 +13,27 @@ import { CredencialDTO } from '../../dto/crendencial.dto';
 @Injectable()
 export class LoginProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello LoginProvider Provider');
+  constructor(public http: HttpClient, public globalProvider: GlobalProvider) {
+
   }
 
 
-  getCredenciais(creds : CredencialDTO) {
-    return this.http.get(`${API_CONFIG.baseUrl}/credencial/${creds.documentoFiscal}/${creds.senha}`);
+  getCredenciais(creds: CredencialDTO, cidade: any) {
+
+    this.globalProvider.setCidadeGlobal(cidade);
+
+    if (cidade === 'Benevides') {
+      console.log('entrou no if');
+      this.globalProvider.setURLBase(API_CONFIG.apiUrlBenevides);
+    } else if (cidade === 'Paragominas') {
+      this.globalProvider.setURLBase(API_CONFIG.apiUrlParagominas);
+    }
+
+    return this.http.get(`${this.globalProvider.urlGlobal}/credencial/${creds.documentoFiscal}/${creds.senha}`);
   }
 
-  setCredenciais(creds : CredencialDTO) {
-    return this.http.post(`${API_CONFIG.baseUrl}/credencial/${creds.documentoFiscal}/${creds.senha}`,creds);
-    //return this.http.get(`${API_CONFIG.baseUrl}/credencial/${creds.documentoFiscal}/${creds.senha}`);
-  }
+  // setCredenciais(creds : CredencialDTO) {
+  //   return this.http.post(`${API_CONFIG.baseUrl}/credencial/${creds.documentoFiscal}/${creds.senha}`,creds);
+  //   //return this.http.get(`${API_CONFIG.baseUrl}/credencial/${creds.documentoFiscal}/${creds.senha}`);
+  // }
 }

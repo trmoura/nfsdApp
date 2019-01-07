@@ -16,6 +16,10 @@ import { LoginPageModule } from '../pages/login/login.module';
 import { HomePageModule } from '../pages/home/home.module';
 import { LoginProvider } from '../providers/login/login.provider';
 
+import { IonicSelectableModule } from 'ionic-selectable';
+import { GlobalProvider } from '../providers/global/global';
+
+
 
 
 
@@ -23,19 +27,18 @@ registerLocaleData(localeFr, 'pt');
 
 @NgModule({
   declarations: [
-    MyApp,    
+    MyApp,
     TabsPage,
-    
+
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule,    
+    HttpClientModule,
     TotalissPageModule,
     LoginPageModule,
-    HomePageModule
-    
-    
+    HomePageModule,
+    IonicSelectableModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -48,7 +51,8 @@ registerLocaleData(localeFr, 'pt');
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     RelatorioIssGeralProvider,
-    LoginProvider
+    LoginProvider,
+    GlobalProvider
   ]
 })
 

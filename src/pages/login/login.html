@@ -30,8 +30,21 @@
 
   <ion-list>
     <ion-item>
-     
-      <ion-input name="cpf" [(ngModel)]="cpf" (keypress)="cpf = format(cpf)" (keyup)="cpf = format(cpf)" placeholder="CPF somente Números" maxlength="14"></ion-input>
+      <ion-label>Selecione a cidade</ion-label>
+      <ionic-selectable
+        item-content 
+        [(ngModel)]="cidade"
+        [items]="cidades"
+        itemValueField="id"
+        itemTextField="nome"
+        [canSearch]="true"
+        (onChange)="cidadeChange($event)">
+    </ionic-selectable>
+      
+    </ion-item>
+    <ion-item>
+      <ion-input name="cpf" [(ngModel)]="cpf" (keypress)="cpf = format(cpf)" (keyup)="cpf = format(cpf)" placeholder="CPF somente Números"
+        maxlength="14"></ion-input>
     </ion-item>
 
     <ion-item>

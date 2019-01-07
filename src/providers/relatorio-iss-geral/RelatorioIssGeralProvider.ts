@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from '../../config/api.config';
+import { GlobalProvider } from '../global/global';
 /*
   Generated class for the RelatorioIssGeralProvider provider.
 
@@ -9,11 +10,12 @@ import { API_CONFIG } from '../../config/api.config';
 */
 @Injectable()
 export class RelatorioIssGeralProvider {
- 
-  constructor(public http: HttpClient) {
-    
+
+  constructor(public http: HttpClient, public globalProvider: GlobalProvider) {
+
   }
-  getRegistros() {
-    return this.http.get(`${API_CONFIG.baseUrl}/previsaoiss`);
+  getRegistros() {   
+
+    return this.http.get(`${this.globalProvider.urlGlobal}/previsaoiss`);
   }
 }

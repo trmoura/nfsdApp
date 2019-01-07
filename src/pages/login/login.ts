@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { CredencialDTO } from '../../dto/crendencial.dto';
 import { LoginProvider } from '../../providers/login/login.provider';
 import { AlertController } from 'ionic-angular';
+import { IonicSelectableComponent } from 'ionic-selectable';
+import { API_CONFIG } from '../../config/api.config';
 
 /**
  * Generated class for the LoginPage page.
@@ -18,6 +20,7 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  @ViewChild('myselect') selectComponent: IonicSelectableComponent;
 
   cpf = '';
   DECIMAL_SEPARATOR = ".";
@@ -30,6 +33,11 @@ export class LoginPage {
     documentoFiscal: "",
     senha: ""
   }
+
+
+  cidade = null;
+
+  cidades = API_CONFIG.cidades;
 
   constructor(
     public navCtrl: NavController,
@@ -44,12 +52,13 @@ export class LoginPage {
 
   login() {
 
-    this.cpf = this.cpf.replace(".", "");
-    this.cpf = this.cpf.replace("-", "");
-    this.cpf = this.cpf.replace(".", "");
-    this.creds.documentoFiscal = this.cpf;
-    console.log(this.creds);
-    this.loginProvider.getCredenciais(this.creds).subscribe(
+    if (this.cidade == null) {
+      this.showAlert('Selecione uma cidade.');
+      return;
+    }
+
+    this.retirarMascara();
+    this.loginProvider.getCredenciais(this.creds,this.cidade).subscribe(
       response => {
         console.log('NÃO DEU ERRO');
         console.log(response);
@@ -61,6 +70,15 @@ export class LoginPage {
         this.showAlert('Usuário ou senha inválidos.');
         console.log(error);
       });
+  }
+
+
+  private retirarMascara() {
+    this.cpf = this.cpf.replace(".", "");
+    this.cpf = this.cpf.replace("-", "");
+    this.cpf = this.cpf.replace(".", "");
+    this.creds.documentoFiscal = this.cpf;
+    console.log(this.creds);
   }
 
   format(valString) {
@@ -104,6 +122,24 @@ export class LoginPage {
     });
     alert.present();
   }
+
+
+  cidadeChange(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    this.cidade = event.value.nome;
+    console.log('cidade selecionada : ' + this.cidade);
+    console.log('event: ', event.value);
+
+
+  }
+
+  onClose() {
+
+  }
+
+
 }
 
 
